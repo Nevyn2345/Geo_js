@@ -26,5 +26,13 @@ function getcoords(event) {
 
 function mainLoop() {
     nextCity();
+    changeTarget();
 }
 
+function changeTarget() {
+    document.getElementById("target").innerHTML = "Your next target is Berlin:";
+}
+
+window.onload=function() {
+    initialise()
+}
