@@ -10,3 +10,6 @@ class City(models.Model):
     times_played = models.IntegerField(default=0)
     average_distance = models.FloatField(default=0)
     difficulty_rating = models.FloatField(default=0)
+
+    def __unicode__(self):
+        return self.name
