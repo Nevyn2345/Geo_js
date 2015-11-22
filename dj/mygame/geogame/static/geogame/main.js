@@ -4,7 +4,7 @@ function initialise() {
     var x = canvas.width;
     var y = canvas.height;
     var img = new Image();
-    img.src = 'medium_map.jpg';
+    img.src = '/static/geogame/medium_map.jpg';
     canvas.addEventListener("mousedown", getcoords, false);
 
     img.onload = function() {
