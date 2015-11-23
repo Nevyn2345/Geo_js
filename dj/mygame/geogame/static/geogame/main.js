@@ -15,22 +15,22 @@ function initialise() {
 }
 
 function nextCity() {
-    alert("Your Next City is " + city.name);
+    document.getElementById("target").innerHTML = "Your Next City is " + city.name + ", " + city.country;
 }
 
 function getcoords(event) {
     clickX = event.pageX;
     clickY = event.pageY;
-    alert("X = "+clickX +", "+ "y = " + clickY);
+    distance = Math.sqrt(Math.pow( clickX - city.xPosition, 2) + Math.pow(clickY - city.yPosition, 2));
+    if (distance < 50) {
+        alert(congratz);
+    } else {
+        alert("you suck!");
+    }
 }
 
 function mainLoop() {
     nextCity();
-    changeTarget();
-}
-
-function changeTarget() {
-    document.getElementById("target").innerHTML = "Your next target is Berlin:";
 }
 
 window.onload=function() {
