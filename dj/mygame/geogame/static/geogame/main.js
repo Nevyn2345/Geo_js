@@ -15,7 +15,7 @@ function initialise() {
 }
 
 function nextCity() {
-    alert("Your Next City is"+city);
+    alert("Your Next City is " + city.name);
 }
 
 function getcoords(event) {

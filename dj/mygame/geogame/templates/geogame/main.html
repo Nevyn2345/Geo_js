@@ -9,7 +9,8 @@
     
     <!--JS VARIABLES-->
     <script>
-    var city = "{{ location.name }}";
+    var city = {{ location|safe }}
+    console.log(city);
     </script>
     
     <script src="{% static "geogame/main.js" %}"></script>
