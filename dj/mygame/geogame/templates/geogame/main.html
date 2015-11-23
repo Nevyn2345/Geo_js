@@ -6,6 +6,12 @@
     {% load staticfiles %}
 
     <link href="{% static "geogame/main.css" %}" rel="stylesheet"/>
+    
+    <!--JS VARIABLES-->
+    <script>
+    var city = "{{ location.name }}";
+    </script>
+    
     <script src="{% static "geogame/main.js" %}"></script>
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"></script> --> 
 </head>

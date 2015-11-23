@@ -15,13 +15,13 @@ function initialise() {
 }
 
 function nextCity() {
-    alert("Your Next City is Berlin");
+    alert("Your Next City is"+city);
 }
 
 function getcoords(event) {
     clickX = event.pageX;
     clickY = event.pageY;
-    alert("X="+clickX +"y=" + clickY);
+    alert("X = "+clickX +", "+ "y = " + clickY);
 }
 
 function mainLoop() {
