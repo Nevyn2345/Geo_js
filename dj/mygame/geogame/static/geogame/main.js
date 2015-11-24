@@ -21,9 +21,12 @@ function nextCity() {
 function getcoords(event) {
     clickX = event.pageX;
     clickY = event.pageY;
-    distance = Math.sqrt(Math.pow( clickX - city.xPosition, 2) + Math.pow(clickY - city.yPosition, 2));
+    cityX = city.xcoord/10
+    cityY = city.ycoord/10
+    console.log("clickX " + clickX + " cityX " + cityX + " clickY " + clickY + " cityY " + cityY)
+    distance = Math.sqrt(Math.pow( clickX - cityX, 2) + Math.pow(clickY - cityY, 2));
     if (distance < 50) {
-        alert(congratz);
+        alert("congratz");
     } else {
         alert("you suck!");
     }
