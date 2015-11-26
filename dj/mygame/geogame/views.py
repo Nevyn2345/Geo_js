@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import RequestContext, loader
 import json
 from django.core.serializers.json import DjangoJSONEncoder
@@ -15,3 +15,10 @@ def index(request):
     context = RequestContext(request, {'location': location_json})
     template = loader.get_template('geogame/main.html')
     return HttpResponse(template.render(context))
+
+
+def next_city(request):
+    a = random.randrange(0, 23000)
+    location = City.objects.get(pk=a)
+    location = model_to_dict(location)
+    return JsonResponse(location)

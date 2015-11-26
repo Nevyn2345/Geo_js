@@ -30,10 +30,29 @@ function getcoords(event) {
     } else {
         alert("you suck!");
     }
+    
+    //$.ajax('next-city/', function(data){
+    //        city = data;    
+    //        alert(city.name);
+    //    });
+
+    $.ajax({
+        url: 'next_city/',
+        type: 'get',
+        success: function(data) {
+            city = data;
+            nextCity();
+        },
+        failure: function(data) {
+            console.log("error");
+            alert('error!');
+        }
+    });
 }
 
 function mainLoop() {
     nextCity();
+
 }
 
 window.onload=function() {
