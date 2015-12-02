@@ -24,25 +24,46 @@ Game.Launch = function() {
     }
 
     Game.getcoords = function(event) { //get's click location on the canvas
-        Game.clickX = event.PageX;
-        Game.clickY = event.PageY;
+        Game.clickX = event.pageX;
+        Game.clickY = event.pageY;
         Game.ctx.drawImage(Game.world, 0, 0);
         Game.distance_calc();
     }
 
     Game.distance_calc = function() {
-        var cityX = Game.city.xcoord/10;
-        var cityY = Game.city.ycoord/10;
+        var cityX = Game.city.xcoord;
+        var cityY = Game.city.ycoord;
         distance = Math.sqrt(Math.pow( Game.clickX - cityX, 2) + Math.pow(Game.clickY - cityY, 2));
-
+        //convert to lat and long
+        var click_long = (Game.clickX*10 - 6000) * 0.03;//remove * 10 when zoom implemented
+        var click_lat = (3000 - Game.clickY*10) * 0.03;
+        var city_long = (Game.city.xcoord - 6000) * 0.03;
+        var city_lat = (3000 - Game.city.ycoord) * 0.03;
+        console.log(city_long, city_lat);        
+        Game.distance = Game.global_dist(click_long, click_lat, city_long, city_lat);
+        console.log(Game.distance);
         if (distance < 50) {
             alert("congratz");
         } else {
             alert("learn geography fool!");
         }
-
-        Game.ctx.drawImage(Game.citycross, cityX - Game.crosswidth/2, cityY - Game.crossheight/2);
+        // remove divide by 10 when zoom implemented
+        Game.ctx.drawImage(Game.citycross, cityX/10 - Game.crosswidth/2, cityY/10 - Game.crossheight/2);
         Game.getCity();
+    }
+
+    Game.global_dist = function(lon1, lat1, lon2, lat2) {
+        //Calculates the great circle distance between two points on the earth
+        lon1 = lon1 * (Math.PI/180);
+        lat1 = lat1 * (Math.PI/180);
+        lon2 = lon2 * (Math.PI/180);
+        lat2 = lat2 * (Math.PI/180);
+        var dlon = lon2 - lon1;
+        var dlat = lat2 - lat1;
+        var a = Math.sin(dlat/2)*Math.sin(dlat/2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dlon/2)*Math.sin(dlon/2);
+        var c = 2 * Math.asin(Math.sqrt(a));
+        var r = 6371; // Radius of earth in Km, use 3956 for miles
+        return c * r;
     }
 
     Game.getCity = function() { // call's views.py to get a new city object
