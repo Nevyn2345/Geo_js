@@ -5,7 +5,7 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 from .models import City
 from django.forms.models import model_to_dict
-import random
+import random, logging
 
 def index(request):
     a = random.randrange(0,23000)
@@ -22,6 +22,7 @@ def next_city(request):
     number = cities+1
     while number > cities:
         number = abs(int(random.gauss(50, 50)))
-    location = City.objects.get(pk=number)
+    location = City.objects.get(pk=7)
     location = model_to_dict(location)
+    logging.warning(location)
     return JsonResponse(location)

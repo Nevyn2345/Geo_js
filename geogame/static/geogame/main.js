@@ -15,7 +15,8 @@ Game.Launch = function() {
         Game.crosswidth = 50;
         Game.crossheight = 50;
         Game.canvas.addEventListener("mousedown", Game.getcoords, false);
-        Game.score = 0;
+        Game.tot_score = 0;
+        Game.level_score = 0;
 
         Game.world.onload = function() {
             Game.ctx.drawImage(Game.world, 0, 0);
@@ -44,12 +45,11 @@ Game.Launch = function() {
         Game.distance = Game.global_dist(click_long, click_lat, city_long, city_lat);
         console.log("Distance: " + Game.distance);        
         if( Game.distance == 0){
-            Game.score += 1000;
+            Game.level_score += 1000;
         } else { 
-            Game.score += (1000 / Math.sqrt(Game.distance) );
+            Game.level_score += Math.round(1000 / Math.sqrt(Game.distance));
         }
-        console.log("Game Score: " +Game.score);
-
+        Game.updateLevelScore();
         // remove divide by 10 when zoom implemented
         Game.ctx.drawImage(Game.citycross, cityX/10 - Game.crosswidth/2, cityY/10 - Game.crossheight/2);
         Game.getCity();
@@ -86,6 +86,11 @@ Game.Launch = function() {
 
     Game.nextCity = function() { // updates target location in HTML
         document.getElementById("target").innerHTML = "Your next city is " + Game.city.name + ", " + Game.city.country;
+    console.log(Game.city.name);
+    }
+
+    Game.updateLevelScore = function() {
+        document.getElementById("score").innerHTML = "Level Score: " + Game.level_score;
     }
 
     Game.mainloop = function() {

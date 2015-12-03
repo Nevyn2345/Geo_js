@@ -4,3 +4,14 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+#target {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#score {
+    display: inline-block;
+}
+
+
