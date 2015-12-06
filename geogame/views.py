@@ -22,7 +22,6 @@ def next_city(request):
     number = cities+1
     while number > cities:
         number = abs(int(random.gauss(50, 50)))
-    location = City.objects.get(pk=7)
+    location = City.objects.get(pk=number)
     location = model_to_dict(location)
-    logging.warning(location)
     return JsonResponse(location)
