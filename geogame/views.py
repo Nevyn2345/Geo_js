@@ -19,9 +19,10 @@ def index(request):
 
 def next_city(request):
     cities = 23000
+    difficulty = int(request.GET.get('difficulty', ''))
     number = cities+1
     while number > cities:
-        number = abs(int(random.gauss(50, 50)))
+        number = abs(int(random.gauss(difficulty, 50)))
     location = City.objects.get(pk=number)
     location = model_to_dict(location)
     return JsonResponse(location)

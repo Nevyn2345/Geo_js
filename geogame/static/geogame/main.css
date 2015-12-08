@@ -14,4 +14,10 @@
     display: inline-block;
 }
 
+#level {
+    display: inline-block;
+}
 
+#tot_score {
+    display: inline-block;
+}

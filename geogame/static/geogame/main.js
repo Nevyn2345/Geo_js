@@ -17,13 +17,21 @@ Game.Launch = function() {
         Game.canvas.addEventListener("mousedown", Game.getcoords, false);
         Game.tot_score = 0;
         Game.level_score = 0;
-
+        Game.num_gos = 0;
+        Game.difficulty = 50;
+        Game.level = 1;
+        Game.updateLevel();
+        Game.updateLevelScore();
         Game.world.onload = function() {
             Game.ctx.drawImage(Game.world, 0, 0);
         }
 
         Game.mainloop();
     }
+
+    /*==============================================
+        MAIN GAME FUNCTIONS
+    ==============================================*/
 
     Game.getcoords = function(event) { //get's click location on the canvas
         var rect = Game.canvas.getBoundingClientRect();
@@ -43,16 +51,25 @@ Game.Launch = function() {
         var city_long = (Game.city.xcoord - 6000) * 0.03;
         var city_lat = (3000 - Game.city.ycoord) * 0.03;
         Game.distance = Game.global_dist(click_long, click_lat, city_long, city_lat);
-        console.log("Distance: " + Game.distance);        
+        console.log("Distance: " + Game.distance); 
+        
         if( Game.distance == 0){
-            Game.level_score += 1000;
+            var go = 1000;
         } else { 
-            Game.level_score += Math.round(1000 / Math.sqrt(Game.distance));
+            var go =  Math.round(1000 / Math.sqrt(Game.distance));
         }
+        Game.tot_score += go;
+        Game.level_score += go;
         Game.updateLevelScore();
         // remove divide by 10 when zoom implemented
         Game.ctx.drawImage(Game.citycross, cityX/10 - Game.crosswidth/2, cityY/10 - Game.crossheight/2);
-        Game.getCity();
+        if(Game.num_gos < 10) {
+            Game.getCity();
+        } else if (Game.num_gos == 10 && Game.level_score < 1000) {
+            Game.levelUp();
+        } else {
+            Game.levelFail();
+        }
     }
 
     Game.global_dist = function(lon1, lat1, lon2, lat2) {
@@ -70,8 +87,10 @@ Game.Launch = function() {
     }
 
     Game.getCity = function() { // call's views.py to get a new city object
+        Game.num_gos++;
         $.ajax({
             url: 'next_city/',
+            data: { difficulty: Game.difficulty },
             type: 'get',
             success: function(data) {
                 Game.city = data;
@@ -84,13 +103,37 @@ Game.Launch = function() {
         });
     }
 
+    Game.levelUp = function() {
+        console.log("SUCCESS");
+        Game.difficulty += 50;
+        Game.level++;
+        Game.num_gos = 0;
+        Game.level_score = 0;
+        Game.updateLevel();
+    }
+
+    Game.levelFail = function() {
+        console.log("FAIL");
+        Game.difficulty = 50;
+        Game.level = 1;
+        Game.num_gos = 0;
+        Game.level_score = 0;
+        Game.tot_score = 0;
+        Game.updateLevel();
+    }
+
     Game.nextCity = function() { // updates target location in HTML
         document.getElementById("target").innerHTML = "Your next city is " + Game.city.name + ", " + Game.city.country;
-    console.log(Game.city.name);
+        console.log(Game.city.name);
+        document.getElementById("tot_score").innerHTML = "Total Score: " + Game.tot_score;
     }
 
     Game.updateLevelScore = function() {
         document.getElementById("score").innerHTML = "Level Score: " + Game.level_score;
+    }
+
+    Game.updateLevel = function() {
+        document.getElementById("level").innerHTML = "Level: " + Game.level;
     }
 
     Game.mainloop = function() {
