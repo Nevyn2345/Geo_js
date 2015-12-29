@@ -14,6 +14,7 @@ Game.Launch = function() {
         Game.citycross.src = '/static/geogame/targetcrosshair.gif';
         Game.crosswidth = 50;
         Game.crossheight = 50;
+        Game.zoomedImg = new Image();
         Game.canvas.addEventListener("mousedown", Game.getcoords, false);
         Game.tot_score = 0;
         Game.level_score = 0;
@@ -22,6 +23,7 @@ Game.Launch = function() {
         Game.level = 1;
         Game.updateLevel();
         Game.updateLevelScore();
+        Game.isZoomed = false;
         Game.world.onload = function() {
             Game.ctx.drawImage(Game.world, 0, 0);
         }
@@ -37,8 +39,14 @@ Game.Launch = function() {
         var rect = Game.canvas.getBoundingClientRect();
         Game.clickX = event.clientX - rect.left;
         Game.clickY = event.clientY - rect.top;
-        Game.ctx.drawImage(Game.world, 0, 0);
-        Game.distance_calc();
+        if(Game.isZoomed == false) {
+            Game.zoom();
+            Game.isZoomed = true;
+        } else if (Game.isZoomed == true) {
+            Game.ctx.drawImage(Game.world, 0, 0);
+            Game.distance_calc();
+            Game.isZoomed = false;
+        }
     }
 
     Game.distance_calc = function() {
@@ -102,6 +110,26 @@ Game.Launch = function() {
             }
         });
     }
+
+    Game.zoom = function() {
+        zoomx = Game.clickX
+        zoomy = Game.clickY
+        $.ajax({
+            url: 'zoom/',
+            data: {xpos: zoomx, ypos: zoomy},
+            type: 'get',
+            success: function(data) {
+                Game.zoomedImg.src = "data:image/jpeg;base64,"+data
+                Game.zoomedImg.onload = function() {
+                    Game.ctx.drawImage(Game.zoomedImg,0,0);
+                }
+            },
+            failure: function(data) {
+                console.log('failed to load zoomed image')
+            }
+        });
+    }
+
 
     Game.levelUp = function() {
         console.log("SUCCESS");

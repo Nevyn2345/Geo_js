@@ -5,11 +5,19 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 from .models import City
 from django.forms.models import model_to_dict
+from django.conf import settings
 import random, logging
+from PIL import Image
+import os
+import base64
+import cStringIO
+
+img = Image.open(settings.STATIC_PATH + 'geogame/big_map.jpg')
+img.load()
 
 def index(request):
     a = random.randrange(0,23000)
-    location = City.objects.get(pk=a)
+    location = City.objects.get(pk=7)
     location = model_to_dict(location)
     location_json = json.dumps(location, cls=DjangoJSONEncoder)
     context = RequestContext(request, {'location': location_json})
@@ -26,3 +34,18 @@ def next_city(request):
     location = City.objects.get(pk=number)
     location = model_to_dict(location)
     return JsonResponse(location)
+
+def test(request):
+    #img = Image.open(settings.STATIC_PATH + 'geogame/big_map.jpg')
+    #img.load()
+    xpos = int(request.GET.get('xpos', ''))
+    ypos = int(request.GET.get('ypos', ''))
+    upper = ypos*10 - 300
+    left = xpos*10 - 600
+    right = xpos*10 + 600
+    lower = ypos*10 + 300
+    cropped_img = img.crop((left, upper, right, lower))
+    buffer = cStringIO.StringIO()
+    cropped_img.save(buffer, format = "JPEG")
+    img_str = base64.b64encode(buffer.getvalue())
+    return HttpResponse(img_str)

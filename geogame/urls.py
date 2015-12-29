@@ -4,7 +4,8 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^next_city/$', views.next_city)
+    url(r'^next_city/$', views.next_city),
+    url(r'zoom/$', views.test)
 ]
 
 
