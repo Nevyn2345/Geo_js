@@ -42,6 +42,8 @@ Game.Launch = function() {
         if(Game.isZoomed == false) {
             Game.zoom();
             Game.isZoomed = true;
+            Game.zoompositionX = (Game.clickX - 60)*10;
+            Game.zoompositionY = (Game.clickY - 30)*10;
         } else if (Game.isZoomed == true) {
             Game.ctx.drawImage(Game.world, 0, 0);
             Game.distance_calc();
@@ -54,8 +56,10 @@ Game.Launch = function() {
         var cityY = Game.city.ycoord;
         distance = Math.sqrt(Math.pow( Game.clickX - cityX, 2) + Math.pow(Game.clickY - cityY, 2));
         //convert to lat and long
-        var click_long = (Game.clickX * 10 - 6000) * 0.03;//remove * 10 when zoom implemented
-        var click_lat = (3000 - Game.clickY * 10) * 0.03;//remove * 10 when zoom implemented
+        var offset_x = Game.clickX + Game.zoompositionX
+        var offset_y = Game.clickY + Game.zoompositionY
+        var click_long = (offset_x - 6000) * 0.03;//remove * 10 when zoom implemented
+        var click_lat = (3000 - offset_y) * 0.03;//remove * 10 when zoom implemented
         var city_long = (Game.city.xcoord - 6000) * 0.03;
         var city_lat = (3000 - Game.city.ycoord) * 0.03;
         Game.distance = Game.global_dist(click_long, click_lat, city_long, city_lat);
