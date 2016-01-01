@@ -116,8 +116,8 @@ Game.Launch = function() {
     }
 
     Game.zoom = function() {
-        zoomx = Game.clickX
-        zoomy = Game.clickY
+        zoomx = Math.round(Game.clickX)
+        zoomy = Math.round(Game.clickY)
         $.ajax({
             url: 'zoom/',
             data: {xpos: zoomx, ypos: zoomy},

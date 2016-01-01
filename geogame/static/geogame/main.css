@@ -21,3 +21,7 @@
 #tot_score {
     display: inline-block;
 }
+
+#targets {
+    display:inline-block;
+}
