@@ -75,13 +75,24 @@ Game.Launch = function() {
         Game.updateLevelScore();
         // remove divide by 10 when zoom implemented
         Game.ctx.drawImage(Game.citycross, cityX/10 - Game.crosswidth/2, cityY/10 - Game.crossheight/2);
-        if(Game.num_gos < 10) {
-            Game.getCity();
-        } else if (Game.num_gos == 10 && Game.level_score < 1000) {
-            Game.levelUp();
+        if(Game.num_gos == 10) {
+            if(Game.level_score > 500){
+                Game.levelUp();
+            } else {
+                Game.levelFail();
+            }
         } else {
-            Game.levelFail();
+            Game.getCity();
         }
+
+
+        //if(Game.num_gos < 10) {
+        //    Game.getCity();
+        //} else if (Game.num_gos == 10 && Game.level_score < 1000) {
+        //    Game.levelUp();
+        //} else {
+        //    Game.levelFail();
+        //}
     }
 
     Game.global_dist = function(lon1, lat1, lon2, lat2) {

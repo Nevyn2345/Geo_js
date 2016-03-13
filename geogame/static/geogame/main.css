@@ -1,3 +1,13 @@
+html, body {
+    margin:0;
+    padding:0;
+    background: #0b0a32;
+}
+
+h1 {
+    margin:0;
+}
+
 .centered {
     position: fixed;
     top: 50%;
@@ -24,4 +34,8 @@
 
 #targets {
     display:inline-block;
+}
+
+.textcol {
+    color: white;
 }
