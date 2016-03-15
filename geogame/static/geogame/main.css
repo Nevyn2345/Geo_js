@@ -16,6 +16,7 @@ h1 {
 .centered {
     position: relative;
     left: 5%;
+    padding-right:5%;
 }
 
 #target {
