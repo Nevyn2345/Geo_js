@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'BankGothic';
+    src: url('../fonts/bankgthd.ttf') format('truetype');
+    src: local('../fonts/bankgthl.ttf') format('truetype');
+}
+
 html, body {
     margin:0;
     padding:0;
@@ -7,7 +13,6 @@ html, body {
 h1 {
     margin:0;
 }
-
 .centered {
     position: fixed;
     top: 50%;
@@ -16,26 +21,35 @@ h1 {
 }
 
 #target {
+    font-family: 'BankGothic';
     display: inline-block;
     margin-right: 10px;
 }
 
 #score {
+    font-family: 'BankGothic';
     display: inline-block;
 }
 
 #level {
+    font-family: 'BankGothic';
     display: inline-block;
 }
 
 #tot_score {
+    font-family: 'BankGothic';
     display: inline-block;
 }
 
 #targets {
+    font-family: 'BankGothic';
     display:inline-block;
 }
 
 .textcol {
     color: white;
+}
+#map {
+    height:auto;
+    width:auto;
 }
