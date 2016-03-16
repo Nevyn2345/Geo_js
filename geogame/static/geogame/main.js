@@ -12,6 +12,8 @@ Game.Launch = function() {
         Game.world.src = '/static/geogame/medium_map.jpg';
         Game.citycross = new Image();
         Game.citycross.src = '/static/geogame/targetcrosshair.gif';
+        Game.guesscross = new Image();
+        Game.guesscross.src = '/static/geogame/clickcrosshair.gif';
         Game.crosswidth = 50;
         Game.crossheight = 50;
         Game.zoomedImg = new Image();
@@ -40,6 +42,8 @@ Game.Launch = function() {
         Game.clickX = event.clientX - rect.left;
         Game.clickY = event.clientY - rect.top;
         if(Game.isZoomed == false) {
+            Game.storex = Game.clickX;
+            Game.storey = Game.clickY;
             Game.zoom();
             Game.isZoomed = true;
             Game.zoompositionX = (Game.clickX - 60)*10;
@@ -58,8 +62,8 @@ Game.Launch = function() {
         //convert to lat and long
         var offset_x = Game.clickX + Game.zoompositionX
         var offset_y = Game.clickY + Game.zoompositionY
-        var click_long = (offset_x - 6000) * 0.03;//remove * 10 when zoom implemented
-        var click_lat = (3000 - offset_y) * 0.03;//remove * 10 when zoom implemented
+        var click_long = (offset_x - 6000) * 0.03;
+        var click_lat = (3000 - offset_y) * 0.03;
         var city_long = (Game.city.xcoord - 6000) * 0.03;
         var city_lat = (3000 - Game.city.ycoord) * 0.03;
         Game.distance = Game.global_dist(click_long, click_lat, city_long, city_lat);
@@ -75,6 +79,7 @@ Game.Launch = function() {
         Game.updateLevelScore();
         // remove divide by 10 when zoom implemented
         Game.ctx.drawImage(Game.citycross, cityX/10 - Game.crosswidth/2, cityY/10 - Game.crossheight/2);
+        Game.ctx.drawImage(Game.guesscross, offset_x/10 - Game.crosswidth/2, offset_y/10- Game.crossheight/2);
         if(Game.num_gos == 10) {
             if(Game.level_score > 500){
                 Game.levelUp();
