@@ -45,6 +45,7 @@ h1 {
 
 .textcol {
     color: white;
+    font-size:110%;
 }
 #map {
     height:auto;

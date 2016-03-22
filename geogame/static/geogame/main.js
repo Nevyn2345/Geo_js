@@ -68,7 +68,6 @@ Game.Launch = function() {
     Game.distance_calc = function() {
         var cityX = Game.city.xcoord;
         var cityY = Game.city.ycoord;
-        distance = Math.sqrt(Math.pow( Game.clickX - cityX, 2) + Math.pow(Game.clickY - cityY, 2));
         //convert to lat and long
         var offset_x = Game.clickX + Game.zoompositionX
         var offset_y = Game.clickY + Game.zoompositionY
@@ -77,7 +76,6 @@ Game.Launch = function() {
         var city_long = (Game.city.xcoord - 6000) * 0.03;
         var city_lat = (3000 - Game.city.ycoord) * 0.03;
         Game.distance = Game.global_dist(click_long, click_lat, city_long, city_lat);
-        console.log("Distance: " + Game.distance); 
         
         if( Game.distance == 0){
             var go = 1000;
@@ -111,7 +109,7 @@ Game.Launch = function() {
         var dlat = lat2 - lat1;
         var a = Math.sin(dlat/2)*Math.sin(dlat/2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dlon/2)*Math.sin(dlon/2);
         var c = 2 * Math.asin(Math.sqrt(a));
-        var r = 6371; // Radius of earth in Km, use 3956 for miles
+        var r = 6371; // Radius of earth in Km, use 3956 for miles (for strange folk that use the imperial system)
         return c * r;
     }
 
@@ -159,6 +157,7 @@ Game.Launch = function() {
         Game.num_gos = 0;
         Game.level_score = 0;
         Game.updateLevel();
+        Game.updateLevelScore();
     }
 
     Game.levelFail = function() {
@@ -173,7 +172,6 @@ Game.Launch = function() {
 
     Game.nextCity = function() { // updates target location in HTML
         l("target").innerHTML = "Your next city is " + Game.city.name + ", " + Game.city.country;
-        console.log(Game.city.name);
         l("tot_score").innerHTML = "Total Score: " + Game.tot_score;
     }
 
@@ -188,7 +186,6 @@ Game.Launch = function() {
     Game.mainloop = function() {
        Game.getCity();
     }
-
 }
 
 /*=============================================
