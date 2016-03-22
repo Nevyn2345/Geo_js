@@ -1,4 +1,12 @@
+/*=====================================================================
+Helper Function
+=====================================================================*/
 
+function l(what) {return document.getElementById(what);}
+
+/*=====================================================================
+Game
+=====================================================================*/
 
 Game = {};
 
@@ -6,7 +14,7 @@ Game.Launch = function() {
     Game.ready = 0;
     Game.Init = function() {
         Game.ready = 1;
-        Game.canvas = document.getElementById("myCanvas");
+        Game.canvas = l("myCanvas");
         Game.ctx = Game.canvas.getContext("2d");
         Game.world = new Image();
         Game.world.src = '/static/geogame/medium_map.jpg';
@@ -14,8 +22,10 @@ Game.Launch = function() {
         Game.citycross.src = '/static/geogame/targetcrosshair.gif';
         Game.guesscross = new Image();
         Game.guesscross.src = '/static/geogame/clickcrosshair.gif';
-        Game.crosswidth = 50;
-        Game.crossheight = 50;
+        Game.citycross.onload = function() {
+            Game.crosswidth = this.width;
+            Game.crossheight = this.height;
+        }
         Game.zoomedImg = new Image();
         Game.canvas.addEventListener("mousedown", Game.getcoords, false);
         Game.tot_score = 0;
@@ -39,7 +49,7 @@ Game.Launch = function() {
 
     Game.getcoords = function(event) { //get's click location on the canvas
         var rect = Game.canvas.getBoundingClientRect();
-        Game.clickX = event.clientX - rect.left;
+        Game.clickX = event.clientX - rect.left; //Compensate for canvas location
         Game.clickY = event.clientY - rect.top;
         if(Game.isZoomed == false) {
             Game.storex = Game.clickX;
@@ -81,7 +91,7 @@ Game.Launch = function() {
         Game.ctx.drawImage(Game.citycross, cityX/10 - Game.crosswidth/2, cityY/10 - Game.crossheight/2);
         Game.ctx.drawImage(Game.guesscross, offset_x/10 - Game.crosswidth/2, offset_y/10- Game.crossheight/2);
         if(Game.num_gos == 10) {
-            if(Game.level_score > 500){
+            if(Game.level_score > 1000){
                 Game.levelUp();
             } else {
                 Game.levelFail();
@@ -89,15 +99,6 @@ Game.Launch = function() {
         } else {
             Game.getCity();
         }
-
-
-        //if(Game.num_gos < 10) {
-        //    Game.getCity();
-        //} else if (Game.num_gos == 10 && Game.level_score < 1000) {
-        //    Game.levelUp();
-        //} else {
-        //    Game.levelFail();
-        //}
     }
 
     Game.global_dist = function(lon1, lat1, lon2, lat2) {
@@ -171,17 +172,17 @@ Game.Launch = function() {
     }
 
     Game.nextCity = function() { // updates target location in HTML
-        document.getElementById("target").innerHTML = "Your next city is " + Game.city.name + ", " + Game.city.country;
+        l("target").innerHTML = "Your next city is " + Game.city.name + ", " + Game.city.country;
         console.log(Game.city.name);
-        document.getElementById("tot_score").innerHTML = "Total Score: " + Game.tot_score;
+        l("tot_score").innerHTML = "Total Score: " + Game.tot_score;
     }
 
     Game.updateLevelScore = function() {
-        document.getElementById("score").innerHTML = "Level Score: " + Game.level_score;
+        l("score").innerHTML = "Level Score: " + Game.level_score;
     }
 
     Game.updateLevel = function() {
-        document.getElementById("level").innerHTML = "Level: " + Game.level;
+        l("level").innerHTML = "Level: " + Game.level;
     }
 
     Game.mainloop = function() {
