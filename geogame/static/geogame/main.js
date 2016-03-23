@@ -16,6 +16,7 @@ Game.Launch = function() {
         Game.ready = 1;
         Game.canvas = l("myCanvas");
         Game.ctx = Game.canvas.getContext("2d");
+        Game.canvas2 = l("myCanvas").getContext("2d");
         Game.world = new Image();
         Game.world.src = '/static/geogame/medium_map.jpg';
         Game.citycross = new Image();
@@ -171,7 +172,7 @@ Game.Launch = function() {
     }
 
     Game.nextCity = function() { // updates target location in HTML
-        l("target").innerHTML = "Your next city is " + Game.city.name + ", " + Game.city.country;
+        l("target").innerHTML = "Your next city is " + Game.city.name + ", " + Game.city.country + " | ";
         l("tot_score").innerHTML = "Total Score: " + Game.tot_score;
     }
 
@@ -186,6 +187,15 @@ Game.Launch = function() {
     Game.mainloop = function() {
        Game.getCity();
     }
+    
+    window.addEventListener('resize', function(event)
+    {
+        Game.canvas2.canvas.width = map.clientWidth;
+        Game.canvas2.canvas.height = map.clientHeight;
+        testw = map.clientWidth;
+        testh = map.clientHeight;
+        Game.ctx.drawImage(Game.world, 0, 0, Game.world.width, Game.world.height, 0,0, testw, testh);
+    });
 }
 
 /*=============================================
