@@ -50,8 +50,8 @@ Game.Launch = function() {
 
     Game.getcoords = function(event) { //get's click location on the canvas
         var rect = Game.canvas.getBoundingClientRect();
-        Game.clickX = event.clientX - rect.left; //Compensate for canvas location
-        Game.clickY = event.clientY - rect.top;
+        Game.clickX = (event.clientX - rect.left)*Game.ratioW; //Compensate for canvas location
+        Game.clickY = (event.clientY - rect.top)*Game.ratioH;
         if(Game.isZoomed == false) {
             Game.storex = Game.clickX;
             Game.storey = Game.clickY;
@@ -194,7 +194,14 @@ Game.Launch = function() {
         Game.canvas2.canvas.height = map.clientHeight;
         testw = map.clientWidth;
         testh = map.clientHeight;
-        Game.ctx.drawImage(Game.world, 0, 0, Game.world.width, Game.world.height, 0,0, testw, testh);
+        Game.ratioW =  Game.world.width/Game.canvas2.canvas.width;
+        Game.ratioH = Game.world.height / Game.canvas2.canvas.height;
+        if (Game.isZoomed == false) {
+            Game.ctx.drawImage(Game.world, 0, 0, Game.world.width, Game.world.height, 0,0, testw, testh);
+        }
+        else {
+            Game.ctx.drawImage(Game.zoomedImg, 0, 0, Game.zoomedImg.width, Game.zoomedImg.height, 0,0, testw, testh);
+        }
     });
 }
 
