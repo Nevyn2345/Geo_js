@@ -16,6 +16,8 @@ Game.Launch = function() {
         Game.ready = 1;
         Game.canvas = l("myCanvas");
         Game.ctx = Game.canvas.getContext("2d");
+        Game.ctx.canvas.width = Game.ctx.canvas.parentNode.offsetWidth;
+        Game.ctx.canvas.height = Game.ctx.canvas.parentNode.offsetHeight;
         Game.canvas2 = l("myCanvas").getContext("2d");
         Game.world = new Image();
         Game.world.src = '/static/geogame/medium_map.jpg';
@@ -38,7 +40,10 @@ Game.Launch = function() {
         Game.updateLevelScore();
         Game.isZoomed = false;
         Game.world.onload = function() {
-            Game.ctx.drawImage(Game.world, 0, 0);
+            scalew = Game.ctx.canvas.width
+            scaleh = Game.ctx.canvas.height
+            Game.ctx.drawImage(Game.world, 0, 0, Game.world.width, Game.world.height, 0,0, scalew, scaleh)
+            //Game.ctx.drawImage(Game.world, 0, 0);
         }
 
         Game.mainloop();
@@ -60,7 +65,7 @@ Game.Launch = function() {
             Game.zoompositionX = (Game.clickX - 60)*10;
             Game.zoompositionY = (Game.clickY - 30)*10;
         } else if (Game.isZoomed == true) {
-            Game.ctx.drawImage(Game.world, 0, 0);
+            Game.ctx.drawImage(Game.world, 0, 0, Game.world.width, Game.world.height, 0,0, testw, testh);
             Game.distance_calc();
             Game.isZoomed = false;
         }
@@ -190,10 +195,10 @@ Game.Launch = function() {
     
     window.addEventListener('resize', function(event)
     {
-        Game.canvas2.canvas.width = map.clientWidth;
-        Game.canvas2.canvas.height = map.clientHeight;
-        testw = map.clientWidth;
-        testh = map.clientHeight;
+        Game.canvas2.canvas.width = Game.ctx.canvas.parentNode.offsetWidth;
+        Game.canvas2.canvas.height = Game.ctx.canvas.parentNode.offsetHeight;
+        testw = Game.ctx.canvas.parentNode.offsetWidth;
+        testh = Game.ctx.canvas.parentNode.offsetHeight;
         Game.ratioW =  Game.world.width/Game.canvas2.canvas.width;
         Game.ratioH = Game.world.height / Game.canvas2.canvas.height;
         if (Game.isZoomed == false) {
